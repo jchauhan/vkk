@@ -1,4 +1,4 @@
-NUM_WORKER_NODES=2
+NUM_WORKER_NODES=6
 IP_NW="10.0.0."
 IP_START=10
 
@@ -8,6 +8,10 @@ Vagrant.configure("2") do |config|
       echo "$IP_NW$((IP_START)) master-node" >> /etc/hosts
       echo "$IP_NW$((IP_START+1)) worker-node01" >> /etc/hosts
       echo "$IP_NW$((IP_START+2)) worker-node02" >> /etc/hosts
+      echo "$IP_NW$((IP_START+3)) worker-node03" >> /etc/hosts
+      echo "$IP_NW$((IP_START+4)) worker-node04" >> /etc/hosts
+      echo "$IP_NW$((IP_START+5)) worker-node05" >> /etc/hosts
+      echo "$IP_NW$((IP_START+6)) worker-node06" >> /etc/hosts
   SHELL
 
   config.vm.box = "bento/ubuntu-21.10"
@@ -31,8 +35,8 @@ Vagrant.configure("2") do |config|
     node.vm.hostname = "worker-node0#{i}"
     node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
     node.vm.provider "virtualbox" do |vb|
-        vb.memory = 2048
-        vb.cpus = 1
+        vb.memory = 8192
+        vb.cpus = 5
     end
     node.vm.provision "shell", path: "scripts/common.sh"
     node.vm.provision "shell", path: "scripts/node.sh"
