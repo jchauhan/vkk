@@ -75,7 +75,15 @@ subjects:
   namespace: kubernetes-dashboard
 EOF
 
+sleep 5
+
 kubectl -n kubernetes-dashboard get secret "$(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}")" -o go-template="{{.data.token | base64decode}}" >> /vagrant/configs/token
+
+# Install longhorn
+kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/deploy/longhorn.yaml
+
+# Upgrade Metric Server . Otherwise metric server is not able to scrape node apis. Added flag --kubelet-insecure-tls
+kubectl apply -f /tmp/high-availability.yaml
 
 sudo -i -u vagrant bash << EOF
 whoami

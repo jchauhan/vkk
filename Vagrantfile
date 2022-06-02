@@ -25,6 +25,7 @@ Vagrant.configure("2") do |config|
         vb.memory = 4048
         vb.cpus = 2
     end
+    master.vm.provision "file", source: "scripts/high-availability.yaml", destination: "/tmp/high-availability.yaml"
     master.vm.provision "shell", path: "scripts/common.sh"
     master.vm.provision "shell", path: "scripts/master.sh"
   end
